@@ -8,5 +8,6 @@ setup(name='colab_spark',
       author='David Newton',
       author_email='david@example.com',
       license='MIT',
+      install_requires=['findspark'],
       packages=find_packages(),
       zip_safe=True)
