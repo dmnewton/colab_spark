@@ -1,6 +1,7 @@
 import os
 import psutil
 
+# support local python script developmnet
 in_colab=True
 try:
     from google.colab.output import eval_js
@@ -11,7 +12,7 @@ except:
 
 def install_all():
 
-    print("installing spark and staring proxy")
+    print("installing spark and starting proxy")
 
     if in_colab:
         rurl=eval_js("google.colab.kernel.proxyPort(9090)")
@@ -47,5 +48,3 @@ def install_all():
         cmd = "nohup python3 {}/ui_proxy.py &".format(os.path.dirname(__file__))
         print(cmd)
         os.system(cmd)
-
-
