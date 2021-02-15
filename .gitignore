@@ -137,4 +137,4 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
-spark-3.0.1-bin-hadoop3.2
+spark-3.0.1-bin-hadoop3.2/
