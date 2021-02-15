@@ -1,4 +1,5 @@
 import os
+import psutil
 
 in_colab=True
 try:
@@ -10,9 +11,7 @@ except:
 
 def install_all():
 
-    print("install")
-    print(__file__)
-    print(os.path.dirname(__file__))
+    print("installing spark and staring proxy")
 
     if in_colab:
         rurl=eval_js("google.colab.kernel.proxyPort(9090)")
@@ -28,6 +27,25 @@ def install_all():
     os.environ["SPARK_HOME"] = spark_home
     os.environ["SPARK_LOCAL_IP"] = "127.0.0.1"
 
-    cmd = "nohup python3 {}/ui_proxy.py &".format(os.path.dirname(__file__))
-    print(cmd)
-    os.system(cmd)
+    start_proxy=True
+    for proc in psutil.process_iter():
+        try:
+            # Get process name & pid from process object.
+            cmdLine = proc.cmdline()
+            processID = proc.pid
+            try:
+                if 'ui_proxy.py' in cmdLine[1]:
+                    print(cmdLine , ' ::: ', processID)
+                    start_proxy=False
+                    break
+            except:
+                pass
+        except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+            pass
+    
+    if start_proxy:
+        cmd = "nohup python3 {}/ui_proxy.py &".format(os.path.dirname(__file__))
+        print(cmd)
+        os.system(cmd)
+
+
